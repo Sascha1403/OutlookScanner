@@ -29,6 +29,8 @@ def main():
         # get Message Type 
         message_Typ = MessageTyp.get_Message_Typ(message)
 
+        # Based on the Typ of the Document execute a routine
+
         if message_Typ == 'Abruf HIL' and test_Abruf == True:
             for attached in message.Attachments:
                 pdf_Abruf = PDFFiles.PdfAbruf(attached)
