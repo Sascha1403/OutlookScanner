@@ -1,6 +1,5 @@
-from ctypes.wintypes import PDWORD
-import win32com.client 
-from PDFFiles import PdfAbruf
+import win32com.client
+from PDF.Files.PDF import Abruf
 
 
 
@@ -12,7 +11,7 @@ class ProcedureAbrufMail():
     def procedure(self):
         list_PDF_Abrufe = []
         for abruf in self.attachments:
-            pdf_Abruf = PdfAbruf(abruf)
+            pdf_Abruf = Abruf(abruf)
 
             
 

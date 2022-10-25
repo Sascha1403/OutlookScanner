@@ -1,7 +1,7 @@
-import PDFFiles
+from PDF.Files import PDF
 import pandas as pd
 import win32com.client
-import PDFFiles
+
 
 class ExcelSheetAbruf():
     def __init__(self, path_ExcelSheet):
@@ -39,7 +39,7 @@ class ExcelSheetAbruf():
         df.at[row_index, column_name] = value
 
 
-    def add_New_Abruf(self, pdf_Abruf: PDFFiles.PdfAbruf):
+    def add_New_Abruf(self, pdf_Abruf: PDF.Abruf):
 
         # Spaltennamen von Tabelle für neuen Dataframe ermitteln, damit mit pd.concat die zwei Dataframes zusammen geführt werden können
         column_names = list(self.df_Abruf.columns.values)
@@ -64,11 +64,11 @@ if __name__ == '__main__':
     folder_Archiv = mapi.Folders("s-steger@live.de").Folders("Archiv")
     for message in messages:
         # Test ab hier
-        path_Test_Sheet = 'C:\\Users\\S-Ste\\Documents\\Dokumente_Sascha\\Bildung\\Programmiern\\Python\\Automate Outlook\\test.xlsx'
+        path_Test_Sheet = '/test.xlsx'
         excel_Sheet_Abruf = ExcelSheetAbruf(path_Test_Sheet)
         if message.SenderEmailAddress == 's-steger@live.de':
             for attached in message.Attachments:
-                pdf_Abruf = PDFFiles.PdfAbruf(attachment=attached)
+                pdf_Abruf = PDF.Abruf(attachment=attached)
 
                 
                 excel_Sheet_Abruf.add_New_Abruf(pdf_Abruf)

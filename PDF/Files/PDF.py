@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 import win32com.client
 import os
-import shutil 
+import shutil
 
-import PdfReader
-import DictonaryContract
-import GetPathByFilename
-
+from PDF.Textanalyse import PdfReader
+from Excel import DictonaryContract
+from Message import SubjectAnalyse
 
 
 class PdfFile(ABC):
@@ -32,7 +31,7 @@ class PdfFile(ABC):
         """ Diese Methode return den Text vom Attachment"""
         
         #Document temporare speicher
-        pdf_Chache_Path = os.path.join("C:\\Users\\S-Ste\\Documents\\Dokumente_Sascha\\Bildung\\Programmiern\\Python\\Automate Outlook\\TestDocuments", self.attachment.FileName)
+        pdf_Chache_Path = os.path.join("/TestDocuments", self.attachment.FileName)
         self.attachment.SaveAsFile(pdf_Chache_Path)
         
         # Text extrahieren 
@@ -57,13 +56,13 @@ class PdfFile(ABC):
 
 
 
-class PdfAbruf(PdfFile):
+class Abruf(PdfFile):
     def __init__(self, attachment: win32com.client.CDispatch) -> None:
         super().__init__(attachment)
         Text_Analyse = TextAbrufAnalyse(self.text)
         self.abruf_Nr = Text_Analyse.get_Abruf_Nr()
         self.contract_Nr = Text_Analyse.get_Contract_Nr()
-        self.versorgungs_Nr =Text_Analyse.get_Vers_Nr()  
+        self.versorgungs_Nr =Text_Analyse.get_Vers_Nr()
         self.menge = Text_Analyse.get_Menge()
         self.zufuehr_Nr = Text_Analyse.get_ZuführNr()
         self.lieferdatum = Text_Analyse.get_Lieferdatum()
@@ -89,9 +88,9 @@ class PdfAbruf(PdfFile):
 
         return path_abruf
 
-class PdfWareneingang():
+class Wareneingang(PdfFile):
     def __init__(self, message: win32com.client.CDispatch, attached:win32com.client.CDispatch) -> None:
-        self.path = GetPathByFilename.get_Path(attached.Filename)
+        self.path = SubjectAnalyse.get_Path(attached.Filename)
 
         
 
@@ -105,7 +104,7 @@ if __name__ == "__main__":
     for message in messages:
         if message.SenderEmailAddress == 's-steger@live.de':
             for attached in message.Attachments:
-                Pdf_Abruf = PdfAbruf(attachment=attached)
+                Pdf_Abruf = Abruf(attachment=attached)
                 print(Pdf_Abruf)
                 
 
